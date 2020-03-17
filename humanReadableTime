@@ -1,0 +1,35 @@
+function formatDuration(seconds) {
+  let years = Math.floor(seconds / 31536000);
+  let dispDays = Math.floor(seconds / 86400) - years * 365;
+  let days = Math.floor(seconds / 86400);
+  let hours = Math.floor(seconds / 3600 - days * 24);
+  let minutes = Math.floor(seconds / 60 - hours * 60 - days * 1440);
+  let secs = seconds - (days * 86400 + hours * 3600 + minutes * 60);
+
+  let array = [years, dispDays, hours, minutes, secs]
+    .map((item, index) => {
+      if (item !== 0) {
+        if (index === 0 && item !== 1) return `${item} years`;
+        if (index === 1 && item !== 1) return `${item} days`;
+        if (index === 2 && item !== 1) return `${item} hours`;
+        if (index === 3 && item !== 1) return `${item} minutes`;
+        if (index === 4 && item !== 1) return `${item} seconds`;
+
+        if (index === 0 && item === 1) return `${item} year`;
+        if (index === 1 && item === 1) return `${item} day`;
+        if (index === 2 && item === 1) return `${item} hour`;
+        if (index === 3 && item === 1) return `${item} minute`;
+        if (index === 4 && item === 1) return `${item} second`;
+      }
+    })
+    .filter(item => item)
+    .map((item, index, array) => {
+      if (index === array.length - 2) return item + " and";
+      if (index !== array.length - 1) return item + ",";
+      else return item;
+    })
+    .join(" ");
+  if (seconds === 0) {
+    return "now";
+  } else return array;
+}
